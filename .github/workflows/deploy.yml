@@ -1,0 +1,25 @@
+name: Salesforce DevOps Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install Salesforce CLI
+        run: npm install -g @salesforce/cli
+
+      - name: Authenticate Salesforce Org
+        run: echo "${{ secrets.SF_AUTH_URL }}" > auth.txt
+
+      - name: Login to Org
+        run: sf org login sfdx-url --sfdx-url-file auth.txt --alias DevPOC
+
+      - name: Deploy to Org
+        run: sf project deploy start --target-org DevPOC

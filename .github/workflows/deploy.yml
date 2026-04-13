@@ -51,7 +51,7 @@ jobs:
         run: sf org login sfdx-url --sfdx-url-file auth.txt --alias DevPOC
 
       - name: Deploy to DevPOC
-        run: sf project deploy start --source-dir artifact/force-app --target-org DevPOC
+        run: sf deploy metadata --source-dir artifact/force-app --target-org DevPOC
 
   deploy-qa:
     needs: deploy-dev
@@ -78,4 +78,4 @@ jobs:
         run: sf org login sfdx-url --sfdx-url-file auth.txt --alias QA
 
       - name: Deploy to QA
-        run: sf project deploy start --source-dir artifact/force-app --target-org QA
+        run: sf deploy metadata --source-dir artifact/force-app --target-org QA

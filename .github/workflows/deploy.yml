@@ -15,19 +15,18 @@ jobs:
       - name: Install Salesforce CLI
         run: npm install -g @salesforce/cli
 
-      # 🔥 BUILD ARTIFACT (ONLY ONCE)
+      # ✅ Create artifact properly
       - name: Create Artifact
         run: |
           mkdir artifact
           cp -r force-app artifact/
-          zip -r artifact.zip artifact
-
-      # 🔥 Upload Artifact (store it)
+      
+      # ✅ Upload folder (NOT zip)
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: salesforce-artifact
-          path: artifact.zip
+          path: artifact/
 
   deploy-dev:
     needs: build
@@ -38,9 +37,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: salesforce-artifact
-
-      - name: Unzip Artifact
-        run: unzip artifact.zip
+          path: artifact
 
       - name: Install Salesforce CLI
         run: npm install -g @salesforce/cli
@@ -63,9 +60,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: salesforce-artifact
-
-      - name: Unzip Artifact
-        run: unzip artifact.zip
+          path: artifact
 
       - name: Install Salesforce CLI
         run: npm install -g @salesforce/cli

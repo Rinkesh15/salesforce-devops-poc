@@ -15,13 +15,11 @@ jobs:
       - name: Install Salesforce CLI
         run: npm install -g @salesforce/cli
 
-      # ✅ Create artifact properly
       - name: Create Artifact
         run: |
           mkdir artifact
           cp -r force-app artifact/
-      
-      # ✅ Upload folder (NOT zip)
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
@@ -33,6 +31,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # ✅ FIX ADDED
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
       - name: Download Artifact
         uses: actions/download-artifact@v3
         with:
@@ -56,6 +58,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # ✅ FIX ADDED
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
       - name: Download Artifact
         uses: actions/download-artifact@v3
         with:

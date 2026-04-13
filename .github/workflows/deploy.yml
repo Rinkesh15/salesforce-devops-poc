@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -15,11 +15,20 @@ jobs:
       - name: Install Salesforce CLI
         run: npm install -g @salesforce/cli
 
-      - name: Authenticate Salesforce Org
+      - name: Authenticate Org
         run: echo "${{ secrets.SF_AUTH_URL }}" > auth.txt
 
-      - name: Login to Org
+      - name: Login
         run: sf org login sfdx-url --sfdx-url-file auth.txt --alias DevPOC
 
-      - name: Deploy to Org
-        run: sf project deploy start --target-org DevPOC
+      # 🔥 STEP 1: BUILD ARTIFACT
+      - name: Create Artifact
+        run: |
+          mkdir artifact
+          cp -r force-app artifact/
+          zip -r artifact.zip artifact
+
+      # 🔥 STEP 2: DEPLOY ARTIFACT (NOT SOURCE)
+      - name: Deploy Artifact
+        run: |
+          sf project deploy start --source-dir artifact/force-app --target-org DevPOC
